@@ -2,13 +2,14 @@
 // @name         Kawaii
 // @namespace    https://raw.githubusercontent.com/zzryn/kawaii_gforms_spammer/refs/heads/main/kawaii.user.js
 // @version      null
-// @description  try to take over the world!
-// @author       You
+// @description  kawaii – a google form spammer (≧◡≦)
+// @author       Ryndm & hellohellohell012321
 // @match        *://docs.google.com/forms/d/*
+// @updateURL    https://github.com/zzryn/kawaii_gforms_spammer/raw/refs/heads/main/kawaii.user.js
+// @downloadURL  https://github.com/zzryn/kawaii_gforms_spammer/raw/refs/heads/main/kawaii.user.js
 // @icon         data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 // @grant        none
 // ==/UserScript==
-
 (() => {
   // Do not execute if the panel already exists
   if (document.getElementById("form-spammer-panel")) return;
@@ -258,7 +259,7 @@
     const rawPayload = document.getElementById("form-payload").value.trim();
     let totalCount = document.getElementById("form-count").valueAsNumber;
     const threadCount = parseInt(document.getElementById("thread-count").value);
-    
+
     const isInfinite = isNaN(totalCount);
     if (isInfinite) {
       totalCount = Number.MAX_SAFE_INTEGER;
