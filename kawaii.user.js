@@ -257,11 +257,15 @@
     }
     const rawPayload = document.getElementById("form-payload").value.trim();
     let totalCount = document.getElementById("form-count").valueAsNumber;
-    if (isNaN(totalCount)) {
+    const threadCount = parseInt(document.getElementById("thread-count").value);
+    
+    const isInfinite = isNaN(totalCount);
+    if (isInfinite) {
       totalCount = Number.MAX_SAFE_INTEGER;
     }
-    const threadCount = parseInt(document.getElementById("thread-count").value);
-    if (!rawPayload || isNaN(totalCount) || isNaN(threadCount)) {
+    const totalCountDisplay = isInfinite ? '∞' : totalCount;
+
+    if (!rawPayload || isNaN(threadCount)) {
       log.textContent = "❌ invalid payload or count.";
       return;
     }
@@ -271,7 +275,7 @@
       return;
     }
     log.textContent = "starting with cleaned payloads...";
-    counter.textContent = `0/${totalCount}`;
+    counter.textContent = `0/${totalCountDisplay}`;
     let completed = 0;
     const submitBatch = async (batchSize) => {
       for (let i = 0; i < batchSize; i++) {
@@ -286,7 +290,7 @@
           console.error(err);
         } finally {
             completed++;
-            counter.textContent = `${completed}/${totalCount}`;
+            counter.textContent = `${completed}/${totalCountDisplay}`;
         }
       }
     };
