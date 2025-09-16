@@ -12,16 +12,13 @@
 (() => {
   // Do not execute if the panel already exists
   if (document.getElementById("form-spammer-panel")) return;
-
   // Create and add the background overlay
   const overlay = document.createElement("div");
   overlay.id = "form-spammer-overlay";
   document.body.appendChild(overlay);
-
   // Create the main panel
   const panel = document.createElement("div");
   panel.id = "form-spammer-panel";
-
   // Set the panel's inner HTML with updated styles for dragging
   panel.innerHTML = `
     <button id="close-panel" title="Close">✖</button>
@@ -30,7 +27,6 @@
       :root {
         --fog-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
       }
-
       #form-spammer-overlay {
         position: fixed;
         top: 0;
@@ -42,7 +38,6 @@
         z-index: 999998;
         background-color: rgba(0, 0, 0, 0.3);
       }
-
       #form-spammer-panel {
         position: fixed;
         top: 20px;
@@ -64,7 +59,6 @@
         user-select: none; /* Disable text selection */
         -webkit-user-select: none; /* For Safari */
       }
-
       /* Reset cursor for interactive elements */
       #form-spammer-panel input,
       #form-spammer-panel textarea,
@@ -72,7 +66,6 @@
       #close-panel {
           cursor: auto;
       }
-
       #form-spammer-panel h3 {
         color: #ffffff;
         font-size: 18px;
@@ -105,6 +98,9 @@
         color: #ffffff;
         border: 1px solid #4b5563;
         outline: none;
+      }
+      #form-spammer-panel textarea {
+        resize: vertical;
       }
       #form-spammer-panel input::placeholder,
       #form-spammer-panel textarea::placeholder {
@@ -166,13 +162,13 @@
         color: #ffffff !important;
       }
     </style>
-    <h3>kawaii gogle form spammer (≧◡≦)</h3>
+    <h3>kawaii – form spammer (≧◡≦)</h3>
     <label for="form-payload">paste payload to send</label>
     <textarea id="form-payload" placeholder="e.g. entry.123=value&entry.456=value"></textarea>
     <label for="form-count">Total submissions</label>
     <input type="number" id="form-count" value="1000" min="1" placeholder="e.g. 99999999" />
     <label for="thread-count">Threads</label>
-    <input type="number" id="thread-count" value="20" min="1" placeholder="e.g. 20" />
+    <input type="number" id="thread-count" value="15" min="1" placeholder="e.g. 20" />
     <div class="small-note">⚠️ 20 threads is ideal for spam. any more will be more prone to rate limits, but will birth potential to crashing the form itself. repeated use will also risk rate limiting.</div>
     <button id="form-submit">(//ω//) start !!1</button>
     <div id="progress-counter">0/0</div>
@@ -185,11 +181,9 @@
     <textarea id="clean-output" placeholder="cleaned result will appear here"></textarea>
   `;
   document.body.appendChild(panel);
-
   // --- Draggable Modal Logic ---
   let isDragging = false;
   let startX, startY, initialX, initialY;
-
   const startDrag = function(e) {
     // Prevent dragging on form elements, buttons, and the close icon
     const noDrag = 'INPUT, TEXTAREA, BUTTON, #close-panel';
@@ -197,81 +191,64 @@
         return;
     }
     e.preventDefault();
-
     const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
     const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-
     isDragging = true;
     startX = clientX;
     startY = clientY;
     const rect = panel.getBoundingClientRect();
     initialX = rect.left;
     initialY = rect.top;
-
     panel.style.transition = 'none';
-
     document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', stopDrag);
     document.addEventListener('touchmove', drag, { passive: false });
     document.addEventListener('touchend', stopDrag);
   };
-
   const drag = function(e) {
     if (!isDragging) return;
     e.preventDefault();
-
     const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
     const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-
     const dx = clientX - startX;
     const dy = clientY - startY;
     let newX = initialX + dx;
     let newY = initialY + dy;
-
     const maxX = window.innerWidth - panel.offsetWidth;
     const maxY = window.innerHeight - panel.offsetHeight;
-
     newX = Math.max(0, Math.min(newX, maxX));
     newY = Math.max(0, Math.min(newY, maxY));
-
     panel.style.left = `${newX}px`;
     panel.style.top = `${newY}px`;
     panel.style.right = 'auto';
     panel.style.transform = 'none';
   };
-
   const stopDrag = function() {
     if (isDragging) {
       isDragging = false;
       panel.style.transition = '';
-
       document.removeEventListener('mousemove', drag);
       document.removeEventListener('mouseup', stopDrag);
       document.removeEventListener('touchmove', drag);
       document.removeEventListener('touchend', stopDrag);
     }
   };
-
   // Attach drag listeners to the entire panel
   panel.addEventListener('mousedown', startDrag);
   panel.addEventListener('touchstart', startDrag, { passive: false });
   // --- End of Draggable Logic ---
-
   const log = document.getElementById("progress-counter");
   const counter = document.getElementById("progress-counter");
-
   const detectFormUrl = () => {
     const form = document.querySelector("form[action*='formResponse']");
     return form ? new URL(form.action).href : null;
   };
-
   const cleanPayload = (raw) => {
     return raw
       .split("&")
       .filter(pair => /^entry\.\d+=/.test(pair))
       .join("&");
   };
-
   document.getElementById("form-submit").addEventListener("click", async () => {
     const url = detectFormUrl();
     if (!url) {
@@ -279,7 +256,10 @@
       return;
     }
     const rawPayload = document.getElementById("form-payload").value.trim();
-    const totalCount = parseInt(document.getElementById("form-count").value);
+    let totalCount = document.getElementById("form-count").valueAsNumber;
+    if (isNaN(totalCount)) {
+      totalCount = Number.MAX_SAFE_INTEGER;
+    }
     const threadCount = parseInt(document.getElementById("thread-count").value);
     if (!rawPayload || isNaN(totalCount) || isNaN(threadCount)) {
       log.textContent = "❌ invalid payload or count.";
@@ -318,13 +298,11 @@
     await Promise.all(threads);
     log.textContent += "\n finished !!  o(＞＜ = ＞＜)o ";
   });
-
   document.getElementById("clean-button").addEventListener("click", () => {
     const raw = document.getElementById("clean-input").value.trim();
     const cleaned = cleanPayload(raw);
     document.getElementById("clean-output").value = cleaned || "no valid entry.xxx=... fields found.";
   });
-
   document.getElementById("close-panel").addEventListener("click", () => {
     document.getElementById("form-spammer-panel").remove();
     document.getElementById("form-spammer-overlay").remove();
