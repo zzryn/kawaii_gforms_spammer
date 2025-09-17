@@ -167,9 +167,9 @@
     <label for="form-payload">paste payload to send</label>
     <textarea id="form-payload" placeholder="e.g. entry.123=value&entry.456=value"></textarea>
     <label for="form-count">Total submissions</label>
-    <input type="number" id="form-count" value="1000" min="1" placeholder="e.g. 99999999" />
+    <input type="number" id="form-count" value="1000" min="1" placeholder="e.g. 100" />
     <label for="thread-count">Threads</label>
-    <input type="number" id="thread-count" value="15" min="1" placeholder="e.g. 20" />
+    <input type="number" id="thread-count" value="15" min="1" placeholder="e.g. 10" />
     <div class="small-note">⚠️ 20 threads is ideal for spam. any more will be more prone to rate limits, but will birth potential to crashing the form itself. repeated use will also risk rate limiting.</div>
     <button id="form-submit">(//ω//) start !!1</button>
     <div id="progress-counter">0/0</div>
@@ -253,7 +253,7 @@
   document.getElementById("form-submit").addEventListener("click", async () => {
     const url = detectFormUrl();
     if (!url) {
-      log.textContent = "❌ invalid form URL. make sure ur on the form submission page not the response page.";
+      log.textContent = "❌ Form URL invalid. Please ensure this is the form entry page, not the response page. (×﹏×)";
       return;
     }
     const rawPayload = document.getElementById("form-payload").value.trim();
@@ -267,12 +267,12 @@
     const totalCountDisplay = isInfinite ? '∞' : totalCount;
 
     if (!rawPayload || isNaN(threadCount)) {
-      log.textContent = "❌ invalid payload or count.";
+      log.textContent = "❌ Invalid payload or thread count. (×﹏×)";
       return;
     }
     const cleaned = cleanPayload(rawPayload);
     if (!cleaned) {
-      log.textContent = "❌ no valid answer fields found (entry.xxx=...). (×﹏×)";
+      log.textContent = "❌ No valid answer fields found. Check if the payload you pasted follows a format like \"entry.xxx=...\". (×﹏×)";
       return;
     }
     log.textContent = "starting with cleaned payloads...";
