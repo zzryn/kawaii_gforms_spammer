@@ -15,7 +15,7 @@ Kawaii is a multi-threaded chrome extension that spams your payload insanely fas
 4. Reload the form page.
 
 ### Javascript:
-1. Find the `kawaii.user.js` file in the repository and copy all lines.
+1. Find the `kawaii.user.js` [file](https://github.com/zzryn/kawaii_gforms_spammer/blob/main/kawaii.user.js) in the repository and copy all lines.
 2. On the form page, open DevTools and click on the **Console** tab.
 3. Paste the code. Press enter/return.
    * If it gives you a highlighted warning saying **Don't paste code into the DevTools Console that you don't understand or haven't reviewed yourself. This could allow attackers to steal your identity or take control of your computer.**, then just enter ```allow pasting``` into the console.
