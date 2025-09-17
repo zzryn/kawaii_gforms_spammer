@@ -1,6 +1,6 @@
-# Kawaii spammer for google forms (≧◡≦)
+# Kawaii – A spammer for Google Forms (≧◡≦)
 
-Kawaii is a multi-threaded chrome extension that spams your payload insanely fast. It is incredibly easy to use, configure, and mod.
+Kawaii is a multi-threaded userscript that spams a form's submission insanely fast. It is incredibly easy to use, configure, and mod.
 
 ---
 
