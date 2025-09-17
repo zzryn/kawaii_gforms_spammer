@@ -8,7 +8,7 @@ Kawaii is a multi-threaded chrome extension that spams your payload insanely fas
 
 ### Userscript:
 1. Install a userscript manager like Tampermonkey or Violentmonkey.
-2. Find the `kawaii.user.js` file in the repository and click the button that says **Raw**.
+2. Find the `kawaii.user.js` [file](https://github.com/zzryn/kawaii_gforms_spammer/blob/main/kawaii.user.js) in the repository and click the button that says **Raw**.
 3. The userscript manager will detect the file as a userscript and prompt you with an install page. To install:
    * Tampermonkey → Click the highlighted **Install** button. (duh)
    * Violentmonkey → Click the top-right **Confirm installation** button.
@@ -37,10 +37,11 @@ Kawaii is a multi-threaded chrome extension that spams your payload insanely fas
    * If your goal is merciless spam, then just input "**E**".
 9. Input a number of threads to use. 10 threads is the default. Higher = faster. If threads > 20, it risks rate limits; any more loses reliability. 
 10. Click the start button and wait for it to complete.
+11. Once Kawaii has finished sending submissions, click **✖** in the top-right corner of the GUI to close.
 
 ---
 
 ## Notes
 
-- this will not work on forms that limit each email to one response.
-- there is a close button on the top right, you just need to hover on it.
+- Kawaii does not work on forms that limit each email to one response.
+- If the console throws the error `This document requires 'TrustedHTML' assignment.` upon execution, the additional script **Trusted-Types Helper** is required to bypass it. The userscript can be installed from [here](https://greasyfork.org/en/scripts/433051-trusted-types-helper), however I plan to implement a modified snippet of [7bp](https://github.com/7bp)'s code to Kawaii in the future.
